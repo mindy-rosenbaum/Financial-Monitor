@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
 import type { Transaction } from '../types/Transaction';
+import { CONFIG } from '../config';
 
 export const useSignalR = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -10,7 +11,7 @@ export const useSignalR = () => {
     useEffect(() => {
         if (connectionRef.current) return;
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:7174/transactionHub', {
+            .withUrl(CONFIG.HUB_URL, {
                 skipNegotiation: true,
                 transport: signalR.HttpTransportType.WebSockets
             })
