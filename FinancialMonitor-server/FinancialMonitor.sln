@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11512.155 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialMonitor", "FinancialMonitor.csproj", "{8CC7EC97-ED52-8CC5-84B1-A01A44980432}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CC7EC97-ED52-8CC5-84B1-A01A44980432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC7EC97-ED52-8CC5-84B1-A01A44980432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC7EC97-ED52-8CC5-84B1-A01A44980432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC7EC97-ED52-8CC5-84B1-A01A44980432}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C0631DF-4A49-417B-B6CC-FC5A57274026}
+	EndGlobalSection
+EndGlobal
