@@ -12,7 +12,7 @@ const Simulator: React.FC = () => {
         setMessage(null);
 
         const mockData: TransactionRequest = {
-            amount: Math.floor(Math.random() * 1000) + 1, // מספר חיובי
+            amount: Math.floor(Math.random() * 1000) + 1,
             currency: ['USD', 'ILS', 'EUR'][Math.floor(Math.random() * 3)],
             status: 'Pending',
             timestamp: new Date().toISOString()
@@ -22,7 +22,6 @@ const Simulator: React.FC = () => {
             await sendTransaction(mockData);
             setMessage({ type: 'success', text: 'Transaction sent successfully!' });
         } catch (error: any) {
-            // כאן אנחנו תופסים את שגיאות ה-Validation מהשרת
             const errorDetail = error.response?.data?.errors?.Amount?.[0] || 'Server error';
             setMessage({ type: 'error', text: `Failed: ${errorDetail}` });
         } finally {

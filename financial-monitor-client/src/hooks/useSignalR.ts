@@ -9,7 +9,6 @@ export const useSignalR = () => {
 
     useEffect(() => {
         if (connectionRef.current) return;
-        // ודאי שהכתובת תואמת לשרת ה-C# שלך ול-Hub שהגדרנו
         const connection = new signalR.HubConnectionBuilder()
             .withUrl('https://localhost:7174/transactionHub', {
                 skipNegotiation: true,
@@ -27,7 +26,6 @@ export const useSignalR = () => {
                 setIsConnected(true);
                 console.log('Connected to SignalR Hub!');
             } catch (err: any) {
-                // התעלמות שקטה משגיאות שנובעות מעצירת החיבור בכוונה על ידי React
                 if (err.name !== 'AbortError' && !err.message?.includes('stop()')) {
                     console.error('❌ SignalR Error:', err);
                 }
@@ -42,7 +40,7 @@ export const useSignalR = () => {
 
         return () => {
             if (connectionRef.current === connection) {
-                connection.stop().catch(() => { /* התעלמות משגיאות עצירה */ });
+                connection.stop().catch(() => { });
                 connectionRef.current = null;
                 setIsConnected(false);
             }

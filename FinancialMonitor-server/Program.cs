@@ -15,32 +15,27 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // הכתובת של הריאקט
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // קריטי ל-SignalR 
+              .AllowCredentials(); 
     });
 });
 
-// 1. הוספת SignalR למערכת
 builder.Services.AddSignalR(options => {
-    options.EnableDetailedErrors = true; // זה ייתן לנו פירוט בשגיאות
+    options.EnableDetailedErrors = true; 
 });
-// 2. רישום ה-Service שלנו (Scoped כי הוא משתמש ב-DbContext)
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
-// הגדרת SQLite
 builder.Services.AddDbContext<FinanceDbContext>((options) =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-// רישום אוטומטי של כל ה-Validators שנמצאים ב-Assembly
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionRequestValidator>();
 
 var app = builder.Build();
 app.UseCors();
 
-// 3. הגדרת ה"נתיב" של ה-Hub (כאן הדפדפן יתחבר)
 app.MapHub<TransactionHub>("/transactionHub");
 app.MapGet("/", () => "Financial Monitor API is running!");
 

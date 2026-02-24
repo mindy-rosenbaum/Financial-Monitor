@@ -6,12 +6,10 @@ namespace FinancialMonitor.Filters
     {
         public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
         {
-            // שליפת ה-Validator המתאים מה-DI
             var validator = context.HttpContext.RequestServices.GetService<IValidator<T>>();
 
             if (validator is not null)
             {
-                // מציאת האובייקט מסוג T ברשימת הפרמטרים של ה-Endpoint
                 var entity = context.Arguments.OfType<T>().FirstOrDefault();
                 if (entity is not null)
                 {

@@ -6,7 +6,6 @@ const Dashboard: React.FC = () => {
     const { transactions, isConnected } = useSignalR();
     const [filter, setFilter] = useState<string>('All');
 
-    // פילטור הנתונים בצד הלקוח (Client-side filtering)
     const filteredTransactions = transactions.filter(t =>
         filter === 'All' || t.status === filter
     );
@@ -32,7 +31,6 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
-                {/* פילטרים */}
                 <div className="flex items-center gap-3">
                     <Filter size={18} className="text-gray-400" />
                     <select
@@ -47,8 +45,6 @@ const Dashboard: React.FC = () => {
                     </select>
                 </div>
             </div>
-
-            {/* טבלה */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                     <thead className="bg-gray-50 border-b border-gray-200">
