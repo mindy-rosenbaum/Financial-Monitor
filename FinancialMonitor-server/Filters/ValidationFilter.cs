@@ -18,12 +18,10 @@ namespace FinancialMonitor.Filters
                     var results = await validator.ValidateAsync(entity);
                     if (!results.IsValid)
                     {
-                        // החזרת תשובה 400 מפורטת ומקצועית
                         return Results.ValidationProblem(results.ToDictionary());
                     }
                 }
             }
-
             return await next(context);
         }
     }
