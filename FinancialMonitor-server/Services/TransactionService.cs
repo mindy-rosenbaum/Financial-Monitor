@@ -1,8 +1,6 @@
 ﻿using FinancialMonitor.Data;
-using FinancialMonitor.Hubs;
 using FinancialMonitor.Interfaces;
 using FinancialMonitor.Models;
-using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 
 namespace FinancialMonitor.Services
@@ -10,13 +8,13 @@ namespace FinancialMonitor.Services
     public class TransactionService : ITransactionService
     {
         private readonly FinanceDbContext _context;
-        private readonly IHubContext<TransactionHub> _hubContext;
+        private readonly ITransactionNotificationService _notificationService;
         private static readonly ConcurrentDictionary<Guid, Transaction> _cache = new();
 
-        public TransactionService(FinanceDbContext context, IHubContext<TransactionHub> hubContext)
+        public TransactionService(FinanceDbContext context, ITransactionNotificationService notificationService)
         {
             _context = context;
-            _hubContext = hubContext;
+            _notificationService = notificationService;
         }
 
         public async Task<bool> ProcessTransactionAsync(Transaction transaction)
@@ -25,9 +23,10 @@ namespace FinancialMonitor.Services
 
             _context.Transactions.Add(transaction);
             var result = await _context.SaveChangesAsync();
+
             if (result > 0)
             {
-                await _hubContext.Clients.All.SendAsync("ReceiveTransactionUpdate", transaction);
+                await _notificationService.NotifyNewTransactionAsync(transaction);
             }
             return result > 0;
         }

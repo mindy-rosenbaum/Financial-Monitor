@@ -25,6 +25,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR(options => {
     options.EnableDetailedErrors = true; 
 });
+builder.Services.AddScoped<ITransactionNotificationService, TransactionNotificationService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddDbContext<FinanceDbContext>((options) =>

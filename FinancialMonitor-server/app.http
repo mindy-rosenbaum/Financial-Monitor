@@ -7,8 +7,8 @@ POST {{base_url}}/api/transactions
 Content-Type: application/json
 
 {
-  "transactionId": "550e8400-e29b-41d4-a716-446655440000",
-  "amount": 0,
+  "transactionId": "750e8400-e29b-41d4-a716-446655440000",
+  "amount": 13,
   "currency": "USD",
   "status": "Completed",
   "timestamp": "2026-01-01T10:00:00Z"
