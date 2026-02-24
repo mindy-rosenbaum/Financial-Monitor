@@ -14,7 +14,7 @@ namespace FinancialMonitor.Endpoints
             group.MapPost("/", CreateTransaction)
                  .AddEndpointFilter<ValidationFilter<TransactionRequest>>();
 
-            group.MapGet("/recent", GetRecentTransactions);
+            group.MapGet("/recent", GetRecentTransactionsAsync);
         }
         private static async Task<IResult> CreateTransaction(
          TransactionRequest request,
@@ -50,9 +50,9 @@ namespace FinancialMonitor.Endpoints
             }
             return Results.BadRequest(ApiResponse<object>.FailureResponse("Failed to process transaction"));
         }
-        private static IResult GetRecentTransactions(ITransactionService service)
+        private static async Task<IResult> GetRecentTransactionsAsync(ITransactionService service)
         {
-            var transactions = service.GetRecentTransactions();
+            var transactions = await service.GetRecentTransactionsAsync();
             var response = ApiResponse<IEnumerable<Transaction>>.SuccessResponse(
             transactions,
             "Recent transactions retrieved");

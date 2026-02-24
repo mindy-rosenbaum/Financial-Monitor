@@ -5,6 +5,6 @@ namespace FinancialMonitor.Interfaces
     public interface ITransactionService
     {
         Task<bool> ProcessTransactionAsync(Transaction transaction);
-        IEnumerable<Transaction> GetRecentTransactions();
+        Task<IEnumerable<Transaction>> GetRecentTransactionsAsync();
     }
 }

@@ -2,29 +2,30 @@ using FinancialMonitor.Data;
 using FinancialMonitor.Endpoints;
 using FinancialMonitor.Hubs;
 using FinancialMonitor.Interfaces;
-using FinancialMonitor.Models;
 using FinancialMonitor.Services;
 using FinancialMonitor.Validators;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var allowedOrigins = builder.Configuration.GetValue<string>("AllowedOrigins")?.Split(',') ?? Array.Empty<string>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
-builder.Services.AddSignalR(options => {
-    options.EnableDetailedErrors = true; 
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
 });
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddScoped<ITransactionNotificationService, TransactionNotificationService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
