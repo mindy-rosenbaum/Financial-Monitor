@@ -1,52 +1,48 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
+import { useAppDispatch } from '../store';
+import { addTransaction } from '../store/slices/transactionsSlice';
 import type { Transaction } from '../types/Transaction';
 import { CONFIG } from '../config';
 
 export const useSignalR = () => {
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const dispatch = useAppDispatch();
     const [isConnected, setIsConnected] = useState(false);
-    const connectionRef = useRef<signalR.HubConnection | null>(null);
 
     useEffect(() => {
-        if (connectionRef.current) return;
+        let isStopped = false;
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl(CONFIG.HUB_URL, {
-                skipNegotiation: true,
-                transport: signalR.HttpTransportType.WebSockets
-            })
+            .withUrl(CONFIG.HUB_URL)
             .withAutomaticReconnect()
-            .configureLogging(signalR.LogLevel.None)
             .build();
 
-        connectionRef.current = connection;
-        // פונקציה פנימית לניהול החיבור
-        const start = async () => {
+        connection.on("ReceiveTransactionUpdate", (transaction: Transaction) => {
+            console.log("✅ SignalR Message Received:", transaction);
+            dispatch(addTransaction(transaction));
+        });
+
+        const startConnection = async () => {
             try {
                 await connection.start();
-                setIsConnected(true);
-                console.log('Connected to SignalR Hub!');
-            } catch (err: any) {
-                if (err.name !== 'AbortError' && !err.message?.includes('stop()')) {
-                    console.error('❌ SignalR Error:', err);
+                if (!isStopped) {
+                    console.log("🚀 SignalR Connected");
+                    setIsConnected(true);
+                }
+            } catch (err) {
+                if (!isStopped) {
+                    console.error('❌ Connection failed: ', err);
                 }
             }
         };
 
-        connection.on('ReceiveTransactionUpdate', (transaction: Transaction) => {
-            setTransactions(prev => [transaction, ...prev]);
-        });
-
-        start();
+        startConnection();
 
         return () => {
-            if (connectionRef.current === connection) {
-                connection.stop().catch(() => { });
-                connectionRef.current = null;
-                setIsConnected(false);
-            }
+            isStopped = true;
+            connection.stop();
         };
-    }, []);
 
-    return { transactions, isConnected };
+    }, [dispatch]);
+
+    return { isConnected };
 };
