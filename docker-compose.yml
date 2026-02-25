@@ -1,0 +1,32 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build: 
+      context: ./FinancialMonitor-server
+    environment:
+      - Redis__ConnectionString=redis:6379 
+      - ConnectionStrings__DefaultConnection=Data Source=FinancialMonitor.db
+      - AllowedOrigins=http://localhost:5173
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "5000:8080"
+    volumes:
+      - ./FinancialMonitor-server/FinancialMonitor.db:/app/FinancialMonitor.db 
+    depends_on:
+      - redis
+    user: root
+
+  client:
+    build:
+      context: ./financial-monitor-client
+    ports:
+      - "5173:80" 
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000/api
+      - VITE_HUB_URL=http://localhost:5000/transactionHub
+    depends_on:
+      - api

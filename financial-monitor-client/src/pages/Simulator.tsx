@@ -3,13 +3,12 @@ import { useAppDispatch, useAppSelector } from '../store';
 import Button from '../components/Button';
 import { Send } from 'lucide-react';
 import { postTransaction } from '../store/thunks';
-import { selectTransactionsError, selectTransactionsLoading } from '../store/selectors';
+import { selectTransactionsLoading } from '../store/selectors';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Simulator: React.FC = () => {
     const dispatch = useAppDispatch();
     const loading = useAppSelector(selectTransactionsLoading);
-    const error = useAppSelector(selectTransactionsError);
 
     const handleSend = useCallback(async () => {
         const statuses = ['Completed', 'Failed', 'Pending'];

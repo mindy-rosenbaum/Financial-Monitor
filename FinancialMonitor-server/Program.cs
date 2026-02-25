@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var allowedOrigins = builder.Configuration.GetValue<string>("AllowedOrigins")?.Split(',') ?? Array.Empty<string>();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
@@ -20,10 +20,14 @@ builder.Services.AddCors(options =>
     });
 });
 
+var redisConnectionString = builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379";
+
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
-});
+})
+.AddStackExchangeRedis(redisConnectionString);
+
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddScoped<ITransactionNotificationService, TransactionNotificationService>();
@@ -36,7 +40,7 @@ builder.Services.AddDbContext<FinanceDbContext>((options) =>
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionRequestValidator>();
 
 var app = builder.Build();
-app.UseCors();
+app.UseCors("AllowAll");
 
 app.MapHub<TransactionHub>("/transactionHub");
 app.MapGet("/", () => "Financial Monitor API is running!");
