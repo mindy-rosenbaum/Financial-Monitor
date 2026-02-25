@@ -9,7 +9,8 @@ export const selectFilteredTransactions = createSelector(
     [selectItems, selectFilter],
     (items, filter): Transaction[] => {
         if (filter === 'All') return items;
-        return items.filter((t) => t.status === filter);
+        const filterAsNumber = Number(filter);
+        return items.filter((t) => Number(t.status) === filterAsNumber);
     }
 );
 

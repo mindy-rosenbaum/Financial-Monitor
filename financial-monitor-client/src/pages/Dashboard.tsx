@@ -11,7 +11,6 @@ const Dashboard: React.FC = () => {
     const { isConnected } = useSignalR();
     const transactions = useAppSelector(state => selectFilteredTransactions(state, filter));
 
-
     const handleFilterChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         setFilter(e.target.value);
     }, []);
@@ -45,12 +44,11 @@ const Dashboard: React.FC = () => {
                 <h1 className="text-2xl font-bold">Monitor</h1>
                 <select
                     value={filter}
-                    onChange={handleFilterChange}
-                    className="border p-2 rounded">
-                    <option value="All">All Transactions</option>
-                    <option value="Completed">Success Only</option>
-                    <option value="Failed">Errors Only</option>
-                    <option value="Pending">Pending</option>
+                    onChange={handleFilterChange}>
+                    <option value="All">All</option>
+                    <option value="1">Completed</option>
+                    <option value="2">Failed</option>
+                    <option value="0">Pending</option>
                 </select>
             </div>
             <DataTable columns={columns} data={transactions} />
