@@ -7,7 +7,6 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
-        {/* Navbar זמני כדי שנוכל לנווט */}
         <nav className="p-4 bg-white shadow-md flex gap-4">
           <Link to="/add" className="text-blue-600 font-bold">Simulator</Link>
           <Link to="/monitor" className="text-blue-600 font-bold">Monitor</Link>

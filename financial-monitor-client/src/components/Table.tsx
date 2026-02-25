@@ -20,37 +20,38 @@ const DataTable = <T extends { id: string | number }>({
     emptyMessage = "No data available"
 }: DataTableProps<T>) => {
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-left border-collapse">
-                <thead className="bg-gray-50 border-b border-gray-200">
+        <div className="overflow-hidden bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">            <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                    {columns.map((col, idx) => (
+                        <th key={idx} className="px-6 py-4 text-sm font-semibold text-gray-600">
+                            {col.header}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+                {data.length === 0 ? (
                     <tr>
-                        {columns.map((col, idx) => (
-                            <th key={idx} className="px-6 py-4 text-sm font-semibold text-gray-600">
-                                {col.header}
-                            </th>
-                        ))}
+                        <td colSpan={columns.length} className="px-6 py-10 text-center text-gray-400">
+                            {isLoading ? "Loading..." : emptyMessage}
+                        </td>
                     </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                    {data.length === 0 ? (
-                        <tr>
-                            <td colSpan={columns.length} className="px-6 py-10 text-center text-gray-400">
-                                {isLoading ? "Loading..." : emptyMessage}
+                ) : (
+                    data.map((item) => (
+                        <tr key={item.id}
+                            className="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors
+                                         animate-row-arrival"
+                        > {columns.map((col, idx) => (
+                            <td key={idx} className="px-6 py-4">
+                                {col.render ? col.render(item) : (item[col.key as keyof T] as unknown as ReactNode)}
                             </td>
+                        ))}
                         </tr>
-                    ) : (
-                        data.map((item) => (
-                            <tr key={item.id} className="hover:bg-gray-50 transition-colors animate-in fade-in slide-in-from-left-2">
-                                {columns.map((col, idx) => (
-                                    <td key={idx} className="px-6 py-4">
-                                        {col.render ? col.render(item) : (item[col.key as keyof T] as unknown as ReactNode)}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                    ))
+                )}
+            </tbody>
+        </table>
         </div>
     );
 };

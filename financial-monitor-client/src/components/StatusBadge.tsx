@@ -11,29 +11,39 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
             case TransactionStatus.Completed:
                 return {
                     label: 'Completed',
-                    classes: 'bg-green-50 text-green-700 border-green-200',
+                    classes: 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
                     dot: 'bg-green-500'
                 };
             case TransactionStatus.Failed:
                 return {
                     label: 'Failed',
-                    classes: 'bg-red-50 text-red-700 border-red-200',
+                    classes: 'bg-rose-50 text-rose-700 border-rose-200/60',
                     dot: 'bg-red-500'
                 };
             default:
                 return {
                     label: 'Pending',
-                    classes: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+                    classes: 'bg-amber-50 text-amber-700 border-amber-200/60',
                     dot: 'bg-yellow-500'
                 };
         }
     }, [status]);
 
     return (
-        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.classes}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+        <div className={`
+            inline-flex items-center gap-2 
+            px-2.5 py-0.5 
+            rounded-md border 
+            text-[11px] font-bold uppercase tracking-wider
+            shadow-sm transition-all duration-200
+            ${config.classes}
+        `}>
+            <span className="relative flex h-2 w-2">
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${config.dot}`}></span>
+                <span className={`relative inline-flex rounded-full h-2 w-2 ${config.dot}`}></span>
+            </span>
             {config.label}
-        </span>
+        </div>
     );
 };
 
