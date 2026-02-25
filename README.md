@@ -80,19 +80,6 @@ A complete development environment is provided:
 
 All services can be started with a single command.
 
-#### ☸️ Kubernetes Ready
-Included:
-
-- `deployment.yaml`
-- `service.yaml`
-
-Configured for:
-- 5 backend replicas  
-- LoadBalancer service  
-- Production-grade deployment simulation  
-
----
-
 ## 🚦 Getting Started
 
 ### ✅ Prerequisites
