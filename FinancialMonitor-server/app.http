@@ -2,7 +2,6 @@
 @port = 7174
 @base_url = https://{{hostname}}:{{port}}
 
-###  שליחת עסקה חדשה
 POST {{base_url}}/api/transactions
 Content-Type: application/json
 
@@ -14,6 +13,5 @@ Content-Type: application/json
   "timestamp": "2026-01-01T10:00:00Z"
 }
 
-### שלב ב: בדיקה שהעסקה נשמרה בזיכרון (GET)
 GET {{base_url}}/api/transactions/recent
 Accept: application/json
