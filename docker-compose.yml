@@ -9,13 +9,13 @@ services:
       context: ./FinancialMonitor-server
     environment:
       - Redis__ConnectionString=redis:6379 
-      - ConnectionStrings__DefaultConnection=Data Source=FinancialMonitor.db
+      - ConnectionStrings__DefaultConnection=Data Source=db_storage/FinancialMonitor.db
       - AllowedOrigins=http://localhost:5173
       - ASPNETCORE_URLS=http://+:8080
     ports:
       - "5000:8080"
     volumes:
-      - ./FinancialMonitor-server/FinancialMonitor.db:/app/FinancialMonitor.db 
+      - ./FinancialMonitor-server/db_storage:/app/db_storage
     depends_on:
       - redis
     user: root

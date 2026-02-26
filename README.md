@@ -94,6 +94,7 @@ All services can be started with a single command.
 To start API, Frontend, and Redis together:
 
 ```bash
+docker-compose down -v
 docker-compose up --build
 ```
 
