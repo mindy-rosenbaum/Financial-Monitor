@@ -16,6 +16,7 @@ services:
       - "5000:8080"
     volumes:
       - ./FinancialMonitor-server/FinancialMonitor.db:/app/FinancialMonitor.db
+    depends_on:
       - redis
     user: root
 
